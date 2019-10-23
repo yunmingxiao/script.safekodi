@@ -15,25 +15,24 @@ addonname   = addon.getAddonInfo('name')
  
 #xbmcgui.Dialog().ok(addonname, line1, line2, line3)
 #'''
-resp = requests.get(
-    "https://safekodi.com:5555/checkAddon",
-    params={
-        "addon": "plugin.video.abcfamily"
-    }
-)
-#print(resp, resp.content)
-line1 = resp.content
+def get_addon(addonid):
+    resp = requests.get(
+        "https://safekodi.com:5555/checkAddon",
+        params={
+            "addon": "plugin.video.abcfamily"
+        }
+    )
+    return resp
 
-payload = {"uid":"svarvel", "addon_list":[{"vrs":"1.0", "name":"cnn"},{"vrs":"2.1","name":"youtube"}]}
-resp = requests.post(
-    "https://safekodi.com:5555/addonList",
-    headers={
-        "Content-Type": "application/json"
-    },
-    data=json.dumps(payload)
-)
-#print(resp, resp.status_code, resp.content)
-line2 = resp.content
+def post_addon(addon_list):
+    payload = {"uid":"svarvel", "addon_list":[{"vrs":"1.0", "name":"cnn"},{"vrs":"2.1","name":"youtube"}]}
+    resp = requests.post(
+        "https://safekodi.com:5555/addonList",
+        headers={"Content-Type": "application/json"},
+        data=json.dumps(payload)
+    )
+    #print(resp, resp.status_code, resp.content)
+    return resp
 
 def get_installed_addons_info():
     json_cmd = {
@@ -52,6 +51,14 @@ def get_installed_addons_info():
         return res
 
 addon_list = get_installed_addons_info()
-line3 = str(type(addon_list)) + str(addon_list)
-xbmcgui.Dialog().ok(addonname, line1, line2, line3)
+
+resp = get_installed_addons_info(addon_list)
+line1 = str(resp) + str(resp.content)
+
+line2 = ''
+for addon in addon_list:
+    resp = get_addon(addon['addonid'])
+    line2 += str(resp) + str(resp.content) + '\n'
+
+xbmcgui.Dialog().ok(addonname, line1, line2)
 #'''
