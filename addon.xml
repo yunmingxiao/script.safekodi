@@ -2,8 +2,8 @@
 <addon id="script.safekodi.test" name="Safekodi" version="1.0.1" provider-name="yunming">
 	<requires>
 		<import addon="xbmc.python" version="2.14.0"/>
-		<import addon="script.module.requests"/>
-		<import addon="script.module.simplejson"/>
+		<import addon="script.module.requests" version="1.0.0"/>
+		<import addon="script.module.simplejson" version="1.0.0"/>
 	</requires>
 	<extension point="xbmc.python.script" library="main.py">
 		<provides>executable</provides>
