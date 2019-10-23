@@ -1,7 +1,7 @@
 import xbmcaddon
 import xbmcgui
 import requests
-import json
+import simplejson as json
  
 addon       = xbmcaddon.Addon()
 addonname   = addon.getAddonInfo('name')
