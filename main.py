@@ -9,29 +9,23 @@ except:
 addon       = xbmcaddon.Addon()
 addonname   = addon.getAddonInfo('name')
  
-#line1 = "Hello World!"
-#line2 = "We can write anything we want here"
-#line3 = "Using Python"
- 
-#xbmcgui.Dialog().ok(addonname, line1, line2, line3)
-#'''
+
 def get_addon(addonid):
     resp = requests.get(
         "https://safekodi.com:5555/checkAddon",
         params={
-            "addon": "plugin.video.abcfamily"
+            "addon": addonid
         }
     )
     return resp
 
 def post_addon(addon_list):
-    payload = {"uid":"svarvel", "addon_list":[{"vrs":"1.0", "name":"cnn"},{"vrs":"2.1","name":"youtube"}]}
+    payload = {"uid":"svarvel", "addon_list":addon_list}
     resp = requests.post(
         "https://safekodi.com:5555/addonList",
         headers={"Content-Type": "application/json"},
         data=json.dumps(payload)
     )
-    #print(resp, resp.status_code, resp.content)
     return resp
 
 def get_installed_addons_info():
