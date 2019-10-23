@@ -1,17 +1,17 @@
 import xbmcaddon
 import xbmcgui
-#import requests
-#import json
+import requests
+import json
  
 addon       = xbmcaddon.Addon()
 addonname   = addon.getAddonInfo('name')
  
-line1 = "Hello World!"
-line2 = "We can write anything we want here"
-line3 = "Using Python"
+#line1 = "Hello World!"
+#line2 = "We can write anything we want here"
+#line3 = "Using Python"
  
-xbmcgui.Dialog().ok(addonname, line1, line2, line3)
-'''
+#xbmcgui.Dialog().ok(addonname, line1, line2, line3)
+#'''
 resp = requests.get(
     "https://safekodi.com:5555/checkAddon",
     params={
@@ -52,4 +52,4 @@ addon_list = get_installed_addons_info()
 line3 = str(type(addon_list))
 line4 = str(addon_list)
 xbmcgui.Dialog().ok(addonname, line1, line2, line3, line4)
-'''
+#'''
