@@ -52,7 +52,7 @@ def get_installed_addons_info():
 
 addon_list = get_installed_addons_info()
 
-resp = get_installed_addons_info(addon_list)
+resp = post_addon(addon_list)
 line1 = str(resp) + str(resp.content)
 
 line2 = ''
