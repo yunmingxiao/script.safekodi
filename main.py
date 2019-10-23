@@ -52,7 +52,6 @@ def get_installed_addons_info():
         return res
 
 addon_list = get_installed_addons_info()
-line3 = str(type(addon_list))
-line4 = str(addon_list)
-xbmcgui.Dialog().ok(addonname, line1, line2, line3, line4)
+line3 = str(type(addon_list)) + str(addon_list)
+xbmcgui.Dialog().ok(addonname, line1, line2, line3)
 #'''
