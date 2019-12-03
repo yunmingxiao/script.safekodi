@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.safekodi.test" name="Safekodi" version="1.0.1" provider-name="yunming">
+<addon id="script.safekodi" name="Safekodi" version="1.0.1" provider-name="yunming">
 	<requires>
 		<import addon="xbmc.python" version="2.14.0"/>
 		<import addon="script.module.requests" version="1.0.0"/>
 	</requires>
-	<extension point="xbmc.python.script" library="main.py">
+	<extension point="xbmc.python.pluginsource" library="main.py">
 		<provides>executable</provides>
 	</extension>
 	<extension point="xbmc.addon.metadata">
@@ -23,6 +23,7 @@
 			<screenshot>resources/screenshot-01.jpg</screenshot>
 			<screenshot>resources/screenshot-02.jpg</screenshot>
 			<screenshot>resources/screenshot-03.jpg</screenshot>
+			<screenshot>resources/screenshot-04.jpg</screenshot>
 		</assets>
 		<news>Updated the addon to use new addon.xml metadata</news>
 	</extension>
