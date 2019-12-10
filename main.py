@@ -101,7 +101,7 @@ def list_categories(categories, addon_list):
                     addon_msg += 'This addon is banned by the Kodi official!\n'
                     mark = 'danger.png'
                 # TODO: delete this, just for debug
-                addon_msg += aid + ', ' + str(addon_status)
+                #addon_msg += aid + ', ' + str(addon_status)
             elif 'Connection errror!' in categories[aid]:
                 addon_msg, mark = 'Oops...\nConnection error! \nPlease check your network configurations.\n', 'unknown.png'
             else:
