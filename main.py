@@ -68,7 +68,7 @@ def get_url(**kwargs):
     return '{0}?{1}'.format(addon_url, urlencode(kwargs))
 
 
-def list_categories(categories):
+def list_categories(categories, addon_list):
     """
     Create the list of addons in the Kodi interface.
     """
@@ -101,15 +101,18 @@ def list_categories(categories):
                     addon_msg += 'This addon is banned by the Kodi official!\n'
                     mark = 'danger.png'
                 # TODO: delete this, just for debug
-                addon_msg += str(addon_status)
+                addon_msg += aid + ', ' + str(addon_status)
+            elif 'Connection errror!' in categories[aid]:
+                addon_msg, mark = 'Oops...\nConnection error! \nPlease check your network configurations.\n', 'unknown.png'
             else:
                 pass
+            addon_msg += '\n\n' + 'Addon description:\n' + addon_list[aid]['description']
         except Exception as e:
             print(e)
             addon_msg = 'Error!\n' + str(addon_status) + '\n' + str(e)
         # Create a list item with a text label and a thumbnail image.
-        list_item = xbmcgui.ListItem(label=aid, label2=addon_msg)
-        infolabels = { "title": aid, "mpaa": addon_msg, "Plot": addon_msg }
+        list_item = xbmcgui.ListItem(label=addon_list[aid]['name'], label2=addon_msg)
+        infolabels = { "title": addon_list[aid]['name'], "mpaa": addon_msg, "Plot": addon_msg }
         list_item.setInfo( type="Video", infoLabels=infolabels )
         image_path = os.path.join(xbmcaddon.Addon().getAddonInfo('path'), 'resources', mark)
         list_item.setArt({
@@ -117,26 +120,7 @@ def list_categories(categories):
             'icon': image_path, 
             'fanart': image_path, 
         })
-        # Set graphics (thumbnail, fanart, banner, poster, landscape etc.) for the list item.
-        # Here we use the same image for all items for simplicity's sake.
-        # In a real-life plugin you need to set each image accordingly.
-        #list_item.setArt({'thumb': VIDEOS[category][0]['thumb'],
-        #                  'icon': VIDEOS[category][0]['thumb'],
-        #                  'fanart': VIDEOS[category][0]['thumb']})
-        # Set additional info for the list item.
-        # Here we use a category name for both properties for for simplicity's sake.
-        # setInfo allows to set various information for an item.
-        # For available properties see the following link:
-        # https://codedocs.xyz/xbmc/xbmc/group__python__xbmcgui__listitem.html#ga0b71166869bda87ad744942888fb5f14
-        # 'mediatype' is needed for a skin to display info for this ListItem correctly.
-        #list_item.setInfo('video', {'title': category,
-        #                            'mpaa': categories[category]})
-        #                            'genre': category,
-        #                            'mediatype': 'video'})
-        # Create a URL for a plugin recursive call.
-        # Example: plugin://plugin.video.example/?action=listing&category=Animals
         url = get_url(action='listing', category=aid)
-        # is_folder = True means that this item opens a sub-list of lower level items.
         is_folder = False
         # Add our item to the Kodi virtual folder listing.
         xbmcplugin.addDirectoryItem(addon_handle, url, list_item, is_folder)
@@ -150,68 +134,32 @@ def list_categories(categories):
     # Finish creating a virtual folder.
     xbmcplugin.endOfDirectory(addon_handle)
 
-
 #xbmcplugin.endOfDirectory(addon_handle)
 #xbmcgui.Dialog().ok(addonname, line2)
 
 if __name__ == "__main__":
     addon_list = get_installed_addons_info()
+    xbmc.log(str(addon_list), xbmc.LOGDEBUG)
 
     # report to safekodi
-    resp = post_addon(addon_list)
+    try:
+        resp = post_addon(addon_list)
+    except Exception as e: 
+        xbmc.log(str(e), xbmc.LOGDEBUG)
 
+    # get the addon status from safekodi
     addon_status = {}
-    #i = 0
+    addon_info = {}
     for addon in addon_list:
-        #i += 1
-        #if i > 3:
-        #    break
-        resp = get_addon(addon['addonid'])
-        addon_status[addon['addonid']] = resp.content
+        try:
+            resp = get_addon(addon['addonid'])
+            addon_status[addon['addonid']] = resp.content
+        except requests.ConnectionError:
+            addon_status[addon['addonid']] = 'Connection errror!'
 
-    list_categories(addon_status)
+        addon_info[addon['addonid']] = {
+            'name': addon['name'],
+            'description': addon['description']
+        }
 
-'''
-class GUI(xbmcgui.WindowXML):
-    def onInit(self):
-        # select a view mode, '50' in our case, as defined in the skin file
-        xbmc.executebuiltin('Container.SetViewMode(50)')
-        # define a temporary list where we are going to add all the listitems to
-        listitems = []
-        # this will be the first item in the list. 'my first item' will be the label that is shown in the list
-        listitem1 = xbmcgui.ListItem('my first item')
-        # add this item to our temporary list
-        listitems.append(listitem1)
-        # let's create another item
-        listitem2 = xbmcgui.ListItem('my second item')
-        # and add it to the temporary list as well
-        listitems.append(listitem2)
-        listitem3 = xbmcgui.ListItem('my third item')
-        listitems.append(listitem3)
-        # by default the built-in container already contains one item, the 'up' (..) item, let's remove that one
-        self.clearList()
-        # now we are going to add all the items we have defined to the (built-in) container
-        self.addItems(listitems)
-        # give kodi a bit of (processing) time to add all items to the container
-        xbmc.sleep(100)
-        # this puts the focus on the top item of the container
-        self.setFocusId(self.getCurrentContainerId())
-
-
-
-if __name__ == "__main__":
-    # define your xml window and pass these four (kodi 17) or five (kodi 18) arguments (more optional items can be passed as well):
-    # 1 'the name of the xml file for this window', 
-    # 2 'the path to your addon',
-    # 3 'the name of the folder that contains the skin',
-    # 4 'the name of the folder that contains the skin xml files'
-    # 5 [kodi 18] set to True for a media window (a window that will list music / videos / pictures), set to False otherwise
-    # 6 [optional] if you need to pass additional data to your window, simply add them to the list
-    # you'll have to add them as key=value pairs: key1=value1, key2=value2, etc...
-    ui = GUI('script-testwindow.xml', CWD, 'default', '1080i', False, defaultSkin=SKIN, optional1='some data') # for kodi 18 and up..
-    #ui = GUI('script-testwindow.xml', CWD, 'default', '1080i', optional1='some data') # use this line instead for kodi 17 and earlier
-    # now open your window. the window will be shown until you close your addon
-    ui.doModal()
-    # window closed, now cleanup a bit: delete your window before the script fully exits
-    del ui
-'''
+    list_categories(addon_status, addon_info)
