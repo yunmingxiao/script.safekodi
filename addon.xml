@@ -9,7 +9,7 @@
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<platform>all</platform>
-		<summary lang="en">SafeKodi helps to identify security issues of installed addons</summary>
+		<summary lang="en">SafeKodi aims at informing Kodi users about potentially malicious addons installed on their devices</summary>
 		<description lang="en">
 SafeKodi is a Kodi addon which aims at informing Kodi users about potentially malicious addons installed on their devices. For example, SafeKodi is able to identify addons which might install malware or inject unwanted advertisement. SafeKodi further provides the users with the quick option to disable addons marked as unsafe.
 
