@@ -16,8 +16,6 @@ from urlparse import parse_qsl
  
 ADDON       = xbmcaddon.Addon()
 CWD = ADDON.getAddonInfo('path').decode('utf-8')
-#addonname   = ADDON.getAddonInfo('name')
-#SKIN = ADDON.getSetting('skin')
 
 addon_url = sys.argv[0]
 addon_handle = int(sys.argv[1])
@@ -145,11 +143,8 @@ def list_categories(categories, addon_list):
             if 'OK' in categories[aid]:
                 addon_status = json.loads('[' + categories[aid].split('[')[1].split(']')[0] + ']')
                 addon_msg = ''
-                if len(addon_status) == 0:
+                if len(addon_status) == 0 or addon_status == ['kodi'] or addon_status == ['ban']:
                     addon_msg = 'This addon is safe!\n'
-                    mark = 'safe.png'
-                if 'kodi' in addon_status:
-                    addon_msg = 'This is a Kodi official addon!\n'
                     mark = 'safe.png'
                 if 'ad' in addon_status:
                     addon_msg += 'This addon may contain some ads.\n'
@@ -158,16 +153,15 @@ def list_categories(categories, addon_list):
                     addon_msg += 'This addon may contain some tracking links which lead to privacy leakage.\n'
                     mark = 'warning.png'
                 if 'threat' in addon_status:
-                    addon_msg += 'This addon may lead to some malacious URLs!\n'
+                    addon_msg += 'This addon may lead to some malicious URLs!\n'
                     mark = 'danger.png'
                 if 'ipban' in addon_status:
-                    addon_msg += 'This addon may communicate with malacious servers!\n'
+                    addon_msg += 'This addon may communicate with malicious servers!\n'
                     mark = 'danger.png'
+                if 'kodi' in addon_status:
+                    addon_msg += '(This is a Kodi official addon)\n'
                 if 'ban' in addon_status:
-                    addon_msg += 'This addon is banned by the Kodi official!\n'
-                    mark = 'danger.png'
-                # TODO: delete this, just for debug
-                #addon_msg += aid + ', ' + str(addon_status)
+                    addon_msg += '(Note that this addon is banned by the Kodi official) \n'
             elif 'Connection errror!' in categories[aid]:
                 addon_msg, mark = 'Oops...\nConnection error! \nPlease check your network configurations.\n', 'unknown.png'
             else:
