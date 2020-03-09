@@ -11,6 +11,7 @@ try:
 except:
     import simplejson as json
 import uuid
+import hashlib
 
 from urlparse import parse_qsl
  
@@ -31,7 +32,7 @@ def get_addon(addonid):
 
 
 def post_addon(addon_list, user_setting):
-    payload = {"uid": uuid.getnode(), "addon_list":addon_list, "user_setting": user_setting}
+    payload = {"uid": hashlib.md5(str(uuid.getnode())).hexdigest(), "addon_list":addon_list, "user_setting": user_setting}
     resp = requests.post(
         "https://safekodi.com:5555/addonList",
         headers={"Content-Type": "application/json"},
