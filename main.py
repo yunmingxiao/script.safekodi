@@ -278,29 +278,41 @@ def entry():
     addon_list = get_installed_addons_info()
     xbmc.log(str(addon_list), xbmc.LOGDEBUG)
 
-    # report to safekodi
+    addons_ret = {}
+    # get the response
     try:
         resp = post_addon(addon_list, user_setting)
+        xbmc.log("resp.content %s" %str(resp.content), xbmc.LOGDEBUG)
+        addons_ret = json.loads(resp.content)
+        xbmc.log("addons_ret: %s" % (str(addons_ret)),  xbmc.LOGDEBUG)
     except Exception as e: 
-        xbmc.log(str(e), xbmc.LOGDEBUG)
+        xbmc.log("Exception: %s" %str(e), xbmc.LOGDEBUG)
 
-    # get the addon status from safekodi
+    
+    # old API: get the addon status from safekodi
     addon_status = {}
     addon_info = {}
     for addon in addon_list:
+        addon_info[addon['addonid']] = {
+            'name': addon['name'],
+            'description': addon['description']
+        }
+
+        # filter
+        if addon['addonid'] in addons_ret:
+            addon_status[addon['addonid']] = addons_ret[addon['addonid']]
+            continue
+        
+        xbmc.log("old api accessed, %s" % addon['addonid'],  xbmc.LOGDEBUG)
+        # old API
         try:
             resp = get_addon(addon['addonid'])
             addon_status[addon['addonid']] = resp.content
         except requests.ConnectionError:
             addon_status[addon['addonid']] = 'Connection errror!'
 
-        addon_info[addon['addonid']] = {
-            'name': addon['name'],
-            'description': addon['description']
-        }
-
     list_categories(addon_status, addon_info)
-
+    
 
 def router(paramstring):
     params = dict(parse_qsl(paramstring))
