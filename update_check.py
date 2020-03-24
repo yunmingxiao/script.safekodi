@@ -46,7 +46,7 @@ if __name__ == '__main__':
             if last_update_offline != last_update_online:
                 # The addon list is updated!
                 xbmc.log("send notification!", xbmc.LOGDEBUG)
-                notification("SafeKodi list updated", "Open SafeKodi to check latest security suggestions for installed addons.", 1500)
+                notification("SafeKodi list updated", "Open SafeKodi to check latest security suggestions for installed addons.", 15000)
         except Exception as e:
             xbmc.log(str(e), xbmc.LOGDEBUG)
 
