@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.safekodi" name="SafeKodi" version="1.0.1" provider-name="Yunming">
+<addon id="script.safekodi" name="SafeKodi" version="1.0.3" provider-name="Yunming">
 	<requires>
 		<import addon="xbmc.python" version="2.14.0"/>
 		<import addon="script.module.requests" version="1.0.0"/>
@@ -7,6 +7,7 @@
 	<extension point="xbmc.python.pluginsource" library="main.py">
 		<provides>executable</provides>
 	</extension>
+	<extension point="xbmc.service" library="update_check.py" start="startup"/>
 	<extension point="xbmc.addon.metadata">
 		<platform>all</platform>
 		<summary lang="en">SafeKodi aims at informing Kodi users about potentially malicious addons installed on their devices</summary>

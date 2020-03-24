@@ -241,6 +241,19 @@ def disable_addon(aid, name, mark):
         post_addon([aid], {'action': 'disable addon'})
         
         
+def update_last_update():
+    try:
+        resp = requests.get(
+            "https://safekodi.com/last_update.html",
+        )
+        last_update_online = resp.content
+
+        last_update_path = xbmc.translatePath(os.path.join('special://home', 'addons', 'script.safekodi', 'resources', 'last_update.txt'))
+        with open(last_update_path, 'w') as fp:
+            fp.write(last_update_online)
+    except Exception as e:
+       xbmc.log(str(e), xbmc.LOGDEBUG)
+
 
 def entry():
     skin = get_skin()
@@ -266,6 +279,8 @@ def entry():
         interface language,
         preferred audio language,
         preferre subtitle language,
+        Kodi versions,
+        screen resolution,
         if remote control is enabled.
         Thank you for your participation!
         ''',
@@ -273,6 +288,18 @@ def entry():
     )
 
     user_setting = get_setting(extra)
+    if extra:
+        try:
+            user_setting.append({"System.OSVersionInfo": xbmc.getInfoLabel('System.BuildVersion')})
+            user_setting.append({"System.KernelVersion": xbmc.getInfoLabel('System.KernelVersion')})
+            user_setting.append({"System.BuildVersion": xbmc.getInfoLabel('System.BuildVersion')})
+            user_setting.append({"System.BuildDate": xbmc.getInfoLabel('System.BuildDate')})
+            user_setting.append({"System.ScreenMode": xbmc.getInfoLabel('System.ScreenMode')})
+            user_setting.append({"System.ScreenWidth": xbmc.getInfoLabel('System.ScreenWidth')})
+            user_setting.append({"System.ScreenHeight": xbmc.getInfoLabel('System.ScreenHeight')})
+            user_setting.append({"System.ScreenResolution": xbmc.getInfoLabel('System.ScreenResolution')})
+        except:
+            pass
     xbmc.log(str(user_setting), xbmc.LOGDEBUG)
 
     addon_list = get_installed_addons_info()
@@ -288,7 +315,6 @@ def entry():
     except Exception as e: 
         xbmc.log("Exception: %s" %str(e), xbmc.LOGDEBUG)
 
-    
     # old API: get the addon status from safekodi
     addon_status = {}
     addon_info = {}
@@ -310,6 +336,8 @@ def entry():
             addon_status[addon['addonid']] = resp.content
         except requests.ConnectionError:
             addon_status[addon['addonid']] = 'Connection errror!'
+
+    update_last_update()
 
     list_categories(addon_status, addon_info)
     
