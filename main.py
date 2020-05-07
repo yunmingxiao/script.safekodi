@@ -256,6 +256,19 @@ def update_last_update():
 
 
 def entry():
+    permisson = xbmcgui.Dialog().yesno(
+        heading='Consent Form', 
+        line1='''
+        By clicking "Yes" you agree to send the names and versions of the currently installed addons in a totally anonymous manner to our backend server. This operation allows SafeKodi to get the latest security suggestions of the addons. Otherwise it cannot perform any function.
+        This operation will also help SafeKodi to discover unknown addons. Nothing local will be uploaded. We will search the web only by the addonid and versions.
+        Thanks for using SafeKodi!
+        ''',
+        nolabel='No', yeslabel="Yes"#, autoclose=15000
+    )
+    if not permisson:
+        list_categories({}, {})
+        return
+    
     skin = get_skin()
     xbmc.log(str(skin), xbmc.LOGNOTICE)
     if skin != 'skin.estuary':
