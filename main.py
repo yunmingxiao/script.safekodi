@@ -259,8 +259,8 @@ def entry():
     permisson = xbmcgui.Dialog().yesno(
         heading='Consent Form', 
         line1='''
-        By clicking "Yes" you agree to send the names and versions of the currently installed addons in a totally anonymous manner to our backend server. This operation allows SafeKodi to get the latest security suggestions of the addons. Otherwise it cannot perform any function.
-        This operation will also help SafeKodi to discover unknown addons. Nothing local will be uploaded. We will search the web only by the addonid and versions.
+        By clicking "Yes" you agree to send the ids and versions of the currently installed addons in a totally anonymous manner to our backend server. This operation allows SafeKodi to get the latest security suggestions of the addons. Otherwise it cannot perform any function.
+        This operation will also help SafeKodi to discover unknown addons. Nothing local will be uploaded. We will search the web only by the addonid and versions and download the addons. The addon ids and versions may be used in research project.
         Thanks for using SafeKodi!
         ''',
         nolabel='No', yeslabel="Yes"#, autoclose=15000
