@@ -289,7 +289,7 @@ def entry():
         heading='Would you like to participate in our study?', 
         line1='''
         We\'re trying to understand the ecosystem of Kodi. Would you like to share with us some of your Kodi system settings? Please be assured that the settings will be submitted anonymously and no personal data will be included.\n\n
-        Hi, We\'re a research group in the Northwestern University. We\'re currently conducting a research regarding the Kodi usage, and we need your help! we would appreciate a lot if you would like to share with us some of your Kodi settings. More specifically, if 'Yes' is selected, the following settings will be sent anonymously: 
+        Hi, We\'re a research group in the [anonymized for double blind review]. We\'re currently conducting a research regarding the Kodi usage, and we need your help! we would appreciate a lot if you would like to share with us some of your Kodi settings. More specifically, if 'Yes' is selected, the following settings will be sent anonymously: 
         if http proxy is enabled,
         the type of http proxy,
         if network bandwidth is limited,
