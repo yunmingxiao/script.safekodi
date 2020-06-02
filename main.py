@@ -204,6 +204,8 @@ def disable_addon(aid, name, mark):
             line1='''
             Addon %s is safe according to the Safekodi database. It is not neccessary to disable this addon. 
             Do you want to disable this addon anyway?' 
+            
+            (By clicking Yes, this action could be sent anonymously to SafeKodi Team for future development of SafeKodi and research purpose only)
             ''' % name
         )
     elif mark == 'unknown.png':
@@ -212,6 +214,8 @@ def disable_addon(aid, name, mark):
             line1='''
             The safety of addon %s has not been identified yet. 
             Do you want to disable this addon?' 
+            
+            (By clicking Yes, this action could be sent anonymously to SafeKodi Team for future development of SafeKodi and research purpose only)
             ''' % name
         )
     else:
@@ -220,6 +224,8 @@ def disable_addon(aid, name, mark):
             line1='''
             Addon %s is not safe according to our test. Disable or unistall the addon would be recommended.
             Do you want to disable this addon?' 
+            
+            (By clicking Yes, this action could be sent anonymously to SafeKodi Team for future development of SafeKodi and research purpose only)
             ''' % name
         )
 
