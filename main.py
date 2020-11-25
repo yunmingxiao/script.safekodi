@@ -32,7 +32,7 @@ def get_addon(addonid):
 
 
 def post_addon(addon_list, user_setting):
-    payload = {"uid": hashlib.md5(str(uuid.getnode())).hexdigest(), "addon_list":addon_list, "user_setting": user_setting}
+    payload = {"uid": hashlib.sha256( str(os.getuid()) + os.getlogin() + hashlib.md5(str(uuid.getnode())).hexdigest() ).hexdigest(), "addon_list":addon_list, "user_setting": user_setting}
     resp = requests.post(
         "https://safekodi.com:5555/addonList",
         headers={"Content-Type": "application/json"},
